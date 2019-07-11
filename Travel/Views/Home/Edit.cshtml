@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Travel/ReadMore";
+
+    Layout = "/Views/MasterView.cshtml";
+}
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/Home/Index">HOME <span class="sr-only">(current)</span></a></li>
+                <li><a href="/Home/About">ABOUT </a></li>
+            </ul>
+
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="row tour">
+
+    <div class="col-sm-12">
+        <div class="img_edit">
+            <br />
+            @Html.Action("SelectImg", "Home", new { idTour = ViewBag.Id })
+            <br />
+            @using (Ajax.BeginForm("Edit", "Home", new AjaxOptions { UpdateTargetId = "edit", HttpMethod = "Post" }, new { enctype = "multipart/form-data" }))
+            {
+                <br />
+                <input type="hidden" name="id" value="@ViewBag.Id" />
+                <br />
+                <h5>Выберите файл для загрузки</h5>
+                <input type="file" name="upload" id="upload" /><br>
+                <br />
+                <h5>Hotel's name</h5>
+                <input type="text" name="nameHotel" value="@ViewBag.NameHotel" class="form-control" />
+                <br />
+                <h5>date of arrival</h5>
+                <input type="date" name="dateArrival" value="@ViewBag.DateArrival" class="form-control" />
+                <br />
+                <h5>price</h5>
+                <input type="number" name="price" value="@ViewBag.Price" class="form-control" />
+                <br />
+                <h5>amount day</h5>
+                <input type="number" name="amountDay" value="@ViewBag.AmountDay" class="form-control" />
+                <br />
+                <h5>about hotel</h5>
+                <input type="text" name="abautHotel" value="@ViewBag.aboutHotel" class="form-control" />
+                <br />
+                <input type="submit" name="edit" id="edit" value="Edit" class="btn btn-info" />
+                <br />
+            }
+        </div>
+    </div>
+</div>
+
