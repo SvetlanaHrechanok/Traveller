@@ -33,7 +33,9 @@
             <br />
             @Html.Action("SelectImg", "Home", new { idTour = ViewBag.Id })
             <br />
-            @using (Ajax.BeginForm("Edit", "Home", new AjaxOptions { UpdateTargetId = "edit", HttpMethod = "Post" }, new { enctype = "multipart/form-data" }))
+        </div>
+        <div class="img_edit">
+           @using (Ajax.BeginForm("Edit", "Home", new AjaxOptions { UpdateTargetId = "edit", HttpMethod = "Post" }, new { enctype = "multipart/form-data" }))
             {
                 <br />
                 <input type="hidden" name="id" value="@ViewBag.Id" />
