@@ -47,7 +47,7 @@ function DeleteTour(id) {
     location.replace("/Home/Index");
 }
 
-let addTour = document.getElementById('add');
+let addTour = document.getElementById('addTour');
 
 addTour.addEventListener('click', () => {
 
@@ -64,7 +64,7 @@ addTour.addEventListener('click', () => {
     if (nameCountry != "" && nameHotel != "" && price != 0 && aboutHotel != "" && amountDay != 0) {
         $.ajax({
             method: "POST",
-            url: "/Home/Add",
+            url: "/Home/AddTour",
             data: { nameCountry, nameHotel, dateArrival, price, aboutHotel, amountDay },
             success: function (context) {
                 alert(context);

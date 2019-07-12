@@ -211,7 +211,7 @@
     <Content Include="Views\MasterView.cshtml" />
     <Content Include="Views\Home\Edit.cshtml" />
     <Content Include="Views\Home\ReadMore.cshtml" />
-    <Content Include="Views\Home\Add.cshtml" />
+    <Content Include="Views\Home\AddTour.cshtml" />
     <Content Include="Views\Home\Message.cshtml" />
   </ItemGroup>
   <ItemGroup />

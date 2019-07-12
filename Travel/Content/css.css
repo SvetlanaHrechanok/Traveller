@@ -132,6 +132,17 @@ input.btn.btn-info {
     margin-bottom: 30px;
 }
 
+.thumbnail {
+    height: 310px;
+}
+
+.thumbnail > img {
+    margin-right: auto;
+    margin-left: auto;
+    width: 300px;
+    height: 160px;
+}
+
 .img_edit {
     min-height: 50px;
     margin: 0 auto;

@@ -18,85 +18,103 @@ namespace Travel.Controllers
             return View();
         }
 
-        public StringBuilder TourOnIndex(Country country)
+        public StringBuilder GetTours(Country country)
         {
             StringBuilder result = new StringBuilder();
-            IEnumerable<Hotel> hotels = travelDB.Hotels.Where(h => h.IdCountry == country.Id);
-            IEnumerable<Tour> tours = travelDB.Tours;
-            IEnumerable<Picture> pictures = travelDB.Pictures;
-            int num = 0;
+            try
+            {                
+                IEnumerable<Hotel> hotels = travelDB.Hotels.Where(h => h.IdCountry == country.Id);
+                IEnumerable<Tour> tours = travelDB.Tours;
+                IEnumerable<Picture> pictures = travelDB.Pictures;
+                int num = 0;
 
-            foreach(Hotel h in hotels)
-            {
-                foreach(Tour t in tours)
+                foreach (Hotel h in hotels)
                 {
-                    if(t.IdHotel == h.Id)
+                    foreach (Tour t in tours)
                     {
-                        num++;
+                        if (t.IdHotel == h.Id)
+                        {
+                            num++;
+                        }
                     }
                 }
-            }
 
-            if(num != 0)
-            {
-                foreach (Hotel hotel in hotels)
+                if (num != 0)
                 {
-                    foreach (Tour tour in tours.Where(t => t.IdHotel == hotel.Id))
+                    foreach (Hotel hotel in hotels)
                     {
-                        Picture currentPictures = pictures.FirstOrDefault(p => p.Id == hotel.IdPicture);
-                        result.AppendLine("" +
-                        "<div class='col-sm-6 col-md-4'>" +
-                            "<div class='thumbnail'>" +
-                                "<img src = '" + currentPictures.NamePicture + "' alt='" + currentPictures.NamePicture + "'>" +
-                                "<div class='caption'>" +
-                                    "<h4>" + hotel.NameHotel + "</h4>" +
-                                    "<h5>" + tour.DateArrival.GetValueOrDefault().ToShortDateString() + "</h5>" +
-                                    "<p>" + hotel.Price + "$</p>" +
-                                    "<p>" + tour.AmountDay + " days</p>" +
-                                    "<p>" + tour.Cost(hotel) + "$</p>" +
-                                    "<div class='buttonsTour'>" +
-                                        "<a href = '/Home/Edit?id=" + tour.Id + "' class='btn btn-primary'>Edit tour</a>" +
-                                        "<button class='btn btn-danger deleteTour'>Delete</button>" +
-                                        "<a href = '/Home/ReadMore?id=" + tour.Id + "' > READ MORE... </a>" +
-                                        "<span class='idTour' style='display: none;'>" + tour.Id + "</span>" +
+                        foreach (Tour tour in tours.Where(t => t.IdHotel == hotel.Id))
+                        {
+                            Picture currentPictures = pictures.FirstOrDefault(p => p.Id == hotel.IdPicture);
+                            result.AppendLine("" +
+                            "<div class='col-sm-6 col-md-4'>" +
+                                "<div class='thumbnail'>" +
+                                    "<img src = '" + currentPictures.NamePicture + "' alt='" + currentPictures.NamePicture + "'>" +
+                                    "<div class='caption'>" +
+                                        "<h4>" + hotel.NameHotel + "</h4>" +
+                                        "<h5>" + tour.DateArrival.GetValueOrDefault().ToShortDateString() + "</h5>" +
+                                        "<p>" + hotel.Price + "$</p>" +
+                                        "<p>" + tour.AmountDay + " days</p>" +
+                                        "<p>" + tour.Cost(hotel) + "$</p>" +
+                                        "<div class='buttonsTour'>" +
+                                            "<a href = '/Home/Edit?id=" + tour.Id + "' class='btn btn-primary'>Edit tour</a>" +
+                                            "<button class='btn btn-danger deleteTour'>Delete</button>" +
+                                            "<a href = '/Home/ReadMore?id=" + tour.Id + "' > READ MORE... </a>" +
+                                            "<span class='idTour' style='display: none;'>" + tour.Id + "</span>" +
+                                        "</div>" +
                                     "</div>" +
                                 "</div>" +
-                            "</div>" +
-                        "</div>");
+                            "</div>");
+                        }
                     }
-                }       
+                }
+                else
+                {
+                    result.AppendLine("" +
+                            "<div class='col-sm-12'>" +
+                                "<div>" +
+                                    "<h4>Tours are not in this country!</h4>" +
+                                "</div>" +
+                            "</div>");
+                }
             }
-            else
+            catch(ArgumentException ex)
             {
-                result.AppendLine("" +
-                        "<div class='col-sm-12'>" +
-                            "<div>" +
-                                "<h4>Tours are not in this country!</h4>" +
-                            "</div>" +
-                        "</div>");
+                result.AppendLine("Error" + ex.ToString());
+            }
+            catch(NullReferenceException ex)
+            {
+                result.AppendLine("Error" + ex.ToString());
             }
 
             return result;
         }
 
-        public StringBuilder ContryOnIndex()
+        public StringBuilder GetCountries()
         {
             StringBuilder result = new StringBuilder();
             IEnumerable<Country> countries = travelDB.Countries;
 
-            foreach(Country country in countries)
+            if(countries.Count() != 0)
             {
-                result.AppendLine("" +
-                "<div class='country'>" +
-                    "<h3>" + country.NameCountry + "</h3>" +
-                "</div>" +
-                "<div class='aboutCountryTours' style='display: none;'>" +
-                    "<div class='row tour'>" +
-                        TourOnIndex(country) +
+                foreach(Country country in countries)
+                {
+                    result.AppendLine("" +
+                    "<div class='country'>" +
+                        "<h3>" + country.NameCountry + "</h3>" +
                     "</div>" +
-                "</div>");
+                    "<div class='aboutCountryTours' style='display: none;'>" +
+                        "<div class='row tour'>" +
+                            GetTours(country) +
+                        "</div>" +
+                    "</div>");
+                }
             }
-
+            else
+            {
+                result.AppendLine("Countries is not founded!");
+            }
+            
             return result;
         }
 
@@ -232,30 +250,37 @@ namespace Travel.Controllers
         public string Upload(HttpPostedFileBase upload, int idTour)
         {
             string result = "";
-            if (upload != null)
+            try
             {
-                string fileName = System.IO.Path.GetFileName(upload.FileName);
-                upload.SaveAs(Server.MapPath("~/Content/images/" + fileName));
-
-                Tour tour = travelDB.Tours.FirstOrDefault(t => t.Id == idTour);
-                Hotel hotel = travelDB.Hotels.FirstOrDefault(h => h.Id == tour.IdHotel);
-
-                Picture newPicture = new Picture
+                if (upload != null)
                 {
-                    NamePicture = "/Content/images/" + fileName,
-                    IdHotel = hotel.Id
-                };
-                travelDB.Pictures.Add(newPicture);
-                travelDB.SaveChanges();
+                    string fileName = System.IO.Path.GetFileName(upload.FileName);
+                    upload.SaveAs(Server.MapPath("~/Content/images/" + fileName));
 
-                hotel.IdPicture = newPicture.Id;
-                travelDB.SaveChanges();
+                    Tour tour = travelDB.Tours.FirstOrDefault(t => t.Id == idTour);
+                    Hotel hotel = travelDB.Hotels.FirstOrDefault(h => h.Id == tour.IdHotel);
 
-                result = "The picture is added!";
+                    Picture newPicture = new Picture
+                    {
+                        NamePicture = "/Content/images/" + fileName,
+                        IdHotel = hotel.Id
+                    };
+                    travelDB.Pictures.Add(newPicture);
+                    travelDB.SaveChanges();
+
+                    hotel.IdPicture = newPicture.Id;
+                    travelDB.SaveChanges();
+
+                    result = "The picture is added!";
+                }
+                else
+                {
+                    result = "The picture is  NOT added!!";
+                }
             }
-            else
+            catch(HttpException ex)
             {
-                result = "The picture is  NOT added!!";
+                result = "Error!" + ex.ToString();
             }
 
             return result;
@@ -326,13 +351,13 @@ namespace Travel.Controllers
             return result;
         }
 
-        public ActionResult Add()
+        public ActionResult AddTour()
         {
             return View();
         }
 
         [HttpPost]
-        public string Add(string nameCountry, string nameHotel, string dateArrival, int price, string aboutHotel, int amountDay, HttpPostedFileBase upload)
+        public string AddTour(string nameCountry, string nameHotel, string dateArrival, int price, string aboutHotel, int amountDay, HttpPostedFileBase upload)
         {
             string result = "";
             try
@@ -367,8 +392,9 @@ namespace Travel.Controllers
                     travelDB.SaveChanges();
                 }
 
-                IEnumerable<Hotel> hotel = travelDB.Hotels.Where(h => h.IdCountry == country.Id);
-                Hotel hotelForTour = hotel.FirstOrDefault(h => h.NameHotel == nameHotel);
+                IEnumerable<Hotel> hotels = travelDB.Hotels.Where(h => h.IdCountry == country.Id);
+                Hotel hotelForTour = hotels.FirstOrDefault(h => h.NameHotel == nameHotel);
+
                 Tour newTour = new Tour
                 {
                     IdHotel = hotelForTour.Id,
