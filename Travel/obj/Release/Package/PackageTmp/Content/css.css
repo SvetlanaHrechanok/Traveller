@@ -1,0 +1,176 @@
+body {
+	background: #ecf7fc;
+	margin: 0;
+}
+header {
+	height: 310px;
+	background: #0e42ad;
+	background-image: url(/Content/images/header.png);
+    background-position-x: center;
+    background-repeat: no-repeat;
+    background-position-y: -549px;
+}
+
+.navbar {
+    border: none;
+}
+
+nav.navbar.navbar-default {
+    top: -50px;
+    background: #ffffffb5;
+    border-radius: 0;
+}
+
+.navbar-default .navbar-nav > .active > a {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#1589ca), to(#fafafa));
+}
+
+.log {
+	height: 145px;
+	width: 1000px;
+	margin: 0 auto;
+	float: left;
+	margin: 50px 0 0 20px;
+}
+
+.content {
+	min-height: 50px;
+	background: #ffffff;
+	margin: -50px auto;
+}
+
+.buttons {
+    margin-top: -50px;
+    margin-left: 30px;
+    margin-bottom: 30px;
+    margin-right: 30px;
+}
+
+.tour {
+   margin: 10px;
+}
+
+.country{
+	margin-left: 30px;
+}
+
+.active{
+	
+}
+
+.aboutCountryTours{
+	display: none;
+}
+
+.buttonsTour {
+    clear: both;
+}
+
+h2 {
+    text-transform: uppercase;
+    font-size: 30px;
+    color: #ffffff;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin: 0 10px;
+    float: left;
+    text-shadow: 1px 1px 0 #d3ddf3;
+}
+
+h3 {
+	font-size: 25px;
+	text-transform: uppercase;
+	color: #666666;
+	font-family: 'Oswald';
+	margin: 0 0 20px 0;
+	cursor: pointer;
+}
+
+p {
+	float: left;
+    margin: 0px 20px 15px 0;
+    font-size: 13px;
+    font-family: 'Arial';
+    color: #989898;
+    letter-spacing: 1px;
+    line-height: 1.5;
+}
+h4 {
+	font-size: 16px;
+    font-family: 'Oswald';
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #666666;
+}
+
+h5 {
+    font-size: 12px;
+    font-family: 'Oswald';
+    font-weight: 400;
+    text-transform: uppercase;
+    color: #666666;
+}
+
+footer {
+	height: 100px;
+	width: 1000px;
+	margin: 0 auto;
+}
+
+form {
+    margin: 0 auto;
+    width: 650px;
+    margin-top: 30px;
+    border-radius: 5px;
+    border: 1px solid #ecf7fc;
+    box-shadow: 0px 0px 20px 1px #0e42ad;
+    padding: 0px 10px;
+}
+
+input.btn.btn-info {
+    margin-bottom: 30px;
+}
+
+.thumbnail {
+    height: 310px;
+}
+
+.thumbnail > img {
+    margin-right: auto;
+    margin-left: auto;
+    width: 300px;
+    height: 160px;
+}
+
+.img_edit {
+    min-height: 50px;
+    margin: 0 auto;
+    text-align: center;
+    clear: both;
+    margin-top: -75px;
+}
+
+.slide {
+    width: 650px;
+    height: 350px;
+    margin: 0 auto;
+}
+
+.img_slide {
+    min-width: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.read {
+    margin-top: 30px;
+}
+
+.img_select {
+    float: left;
+    margin: 10px 10px;
+    width: 200px;
+    height: 150px; 
+}

@@ -44,7 +44,7 @@ function DeleteTour(id) {
         },
     });
 
-    location.replace("/Home/Index");
+    location.href("/Home/Index");
 }
 
 let addTour = document.getElementById('addTour');
@@ -74,7 +74,7 @@ addTour.addEventListener('click', () => {
             },
         });
 
-        location.replace("/Home/Index");
+        location.href("/Home/Index");
     } else {
         alert("Form`s fields are not filled!")
     }

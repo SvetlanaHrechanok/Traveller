@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="TravelDBModelEntities-Web.config Connection String" description="TravelDBModelEntities Строка подключения в web.config, используемая приложением для доступа к базе данных." defaultValue="metadata=res://*/Models.TravelModel.csdl|res://*/Models.TravelModel.ssdl|res://*/Models.TravelModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=(LocalDB)\MSSQLLocalDB;attachdbfilename=|DataDirectory|\TravelDBModel.mdf;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\УЧЕБА\\Epam\\MyProject\\Travel\\Travel\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='TravelDBModelEntities']/@connectionString" />
+  </parameter>
+</parameters>

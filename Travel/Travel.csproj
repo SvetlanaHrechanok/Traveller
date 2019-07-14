@@ -169,6 +169,7 @@
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\css.css" />
+    <Content Include="Content\images\about.jpg" />
     <Content Include="Content\images\header.png" />
     <Content Include="Content\images\legak.png" />
     <Content Include="Content\images\logo.png" />
@@ -221,6 +222,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
