@@ -30,7 +30,8 @@
 <div class="row tour">
     <div class="col-sm-12">
         <div class="img_edit">
-            <form method="post" enctype="multipart/form-data">
+           @using (Ajax.BeginForm("AddTour", "Home", new AjaxOptions { UpdateTargetId = "addTour", HttpMethod = "Post" }, new { enctype = "multipart/form-data" }))
+           {
                 <br />
                 <h5>Выберите файл для загрузки</h5>
                 <input type="file" name="upload" id="upload" /><br>
@@ -53,9 +54,9 @@
                 <h5>about hotel</h5>
                 <input type="text" name="aboutHotel" id="aboutHotel" value="" class="form-control" />
                 <br />
-                <input type="button" name="addTour" id="addTour" value="Add tour" class="btn btn-info" />
+                <input type="submit" name="addTour" id="addTour" value="Add tour" class="btn btn-info"/>
                 <br />
-            </form>
+           }
         </div>
     </div>
 </div>

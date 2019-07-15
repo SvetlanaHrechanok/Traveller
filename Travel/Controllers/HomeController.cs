@@ -242,7 +242,7 @@ namespace Travel.Controllers
             else
             {
                 ViewBag.Message = "Page is not found";
-                return View("~/Views/Home/Message.cshtml");
+                return PartialView("~/Views/Home/Message.cshtml");
             }
         }
 
@@ -289,21 +289,27 @@ namespace Travel.Controllers
         [HttpPost]
         public ActionResult Edit(int id, string nameHotel, DateTime dateArrival, int price, string aboutHotel, int amountDay, HttpPostedFileBase upload)
         {
+            if(nameHotel != "" && price != 0 && aboutHotel != "" && amountDay != 0 && dateArrival != null)
+            {
+                Tour tour = travelDB.Tours.FirstOrDefault(t => t.Id == id);
+                tour.DateArrival = dateArrival;
+                tour.AmountDay = amountDay;
+                travelDB.SaveChanges();
 
-            Tour tour = travelDB.Tours.FirstOrDefault(t => t.Id == id);
-            tour.DateArrival = dateArrival;
-            tour.AmountDay = amountDay;
-            travelDB.SaveChanges();
+                Hotel hotel = travelDB.Hotels.FirstOrDefault(h => h.Id == tour.IdHotel);
+                hotel.NameHotel = nameHotel;
+                hotel.Price = price;
+                hotel.AboutHotel = aboutHotel;
+                travelDB.SaveChanges();
 
-            Hotel hotel = travelDB.Hotels.FirstOrDefault(h => h.Id == tour.IdHotel);
-            hotel.NameHotel = nameHotel;
-            hotel.Price = price;
-            hotel.AboutHotel = aboutHotel;
-            travelDB.SaveChanges();
+                ViewBag.Message = "The tour edit! " + Upload(upload, id);
+            }
+            else
+            {
+                ViewBag.Message = "Form`s fields are not filled!";
+            }
 
-            ViewBag.Message = "The tour edit! " + Upload(upload, id);
-
-            return View("~/Views/Home/Message.cshtml");
+            return PartialView("~/Views/Home/Message.cshtml");
         }
 
         public StringBuilder SelectImg(int idTour)
@@ -357,65 +363,71 @@ namespace Travel.Controllers
         }
 
         [HttpPost]
-        public string AddTour(string nameCountry, string nameHotel, string dateArrival, int price, string aboutHotel, int amountDay, HttpPostedFileBase upload)
+        public ActionResult AddTour(string nameCountry, string nameHotel, string dateArrival, int price, string aboutHotel, int amountDay, HttpPostedFileBase upload)
         {
-            string result = "";
-            try
+            if(nameCountry != "" && nameHotel != "" && price != 0 && aboutHotel != "" && amountDay != 0 && upload != null)
             {
-                int numCountry = travelDB.Countries.Count(c => c.NameCountry == nameCountry);
-
-                if (numCountry == 0)
+                try
                 {
-                    Country newCountry = new Country
+                    int numCountry = travelDB.Countries.Count(c => c.NameCountry == nameCountry);
+
+                    if (numCountry == 0)
                     {
-                        NameCountry = nameCountry
-                    };
-                    travelDB.Countries.Add(newCountry);
-                    travelDB.SaveChanges();
-                }
+                        Country newCountry = new Country
+                        {
+                            NameCountry = nameCountry
+                        };
+                        travelDB.Countries.Add(newCountry);
+                        travelDB.SaveChanges();
+                    }
 
-                int numHotel = travelDB.Hotels.Count(h => h.NameHotel == nameHotel);
-                Country country = travelDB.Countries.FirstOrDefault(c => c.NameCountry == nameCountry);
-                int numIdCountry = travelDB.Hotels.Count(h => h.IdCountry == country.Id);
+                    int numHotel = travelDB.Hotels.Count(h => h.NameHotel == nameHotel);
+                    Country country = travelDB.Countries.FirstOrDefault(c => c.NameCountry == nameCountry);
+                    int numIdCountry = travelDB.Hotels.Count(h => h.IdCountry == country.Id);
 
-                if ( numHotel == 0 || numIdCountry == 0)
-                {
-                    Hotel newHotel = new Hotel
+                    if (numHotel == 0 || numIdCountry == 0)
                     {
-                        IdCountry = country.Id,
-                        IdPicture = 1,
-                        NameHotel = nameHotel,
-                        AboutHotel = aboutHotel,
-                        Price = price
+                        Hotel newHotel = new Hotel
+                        {
+                            IdCountry = country.Id,
+                            IdPicture = 1,
+                            NameHotel = nameHotel,
+                            AboutHotel = aboutHotel,
+                            Price = price
+                        };
+                        travelDB.Hotels.Add(newHotel);
+                        travelDB.SaveChanges();
+                    }
+
+                    IEnumerable<Hotel> hotels = travelDB.Hotels.Where(h => h.IdCountry == country.Id);
+                    Hotel hotelForTour = hotels.FirstOrDefault(h => h.NameHotel == nameHotel);
+
+                    Tour newTour = new Tour
+                    {
+                        IdHotel = hotelForTour.Id,
+                        DateArrival = DateTime.Parse(dateArrival),
+                        AmountDay = amountDay
                     };
-                    travelDB.Hotels.Add(newHotel);
+                    travelDB.Tours.Add(newTour);
                     travelDB.SaveChanges();
+
+                    ViewBag.Message = "The tour add! " + Upload(upload, newTour.Id);
                 }
-
-                IEnumerable<Hotel> hotels = travelDB.Hotels.Where(h => h.IdCountry == country.Id);
-                Hotel hotelForTour = hotels.FirstOrDefault(h => h.NameHotel == nameHotel);
-
-                Tour newTour = new Tour
+                catch (ArgumentException ex)
                 {
-                    IdHotel = hotelForTour.Id,
-                    DateArrival = DateTime.Parse(dateArrival),
-                    AmountDay = amountDay
-                };
-                travelDB.Tours.Add(newTour);
-                travelDB.SaveChanges();
-
-                result = "The tour add! " + Upload(upload, newTour.Id);
+                    ViewBag.Message = ex.ToString();
+                }
+                catch (NullReferenceException ex)
+                {
+                    ViewBag.Message = ex.ToString();
+                }
             }
-            catch (ArgumentException ex)
+            else
             {
-                result = ex.ToString();
-            }
-            catch(NullReferenceException ex)
-            {
-                result = ex.ToString();
+                ViewBag.Message = "Form`s fields are not filled!";
             }
 
-            return result;
+            return PartialView("~/Views/Home/Message.cshtml");
         }
     }
 } 

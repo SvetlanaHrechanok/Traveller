@@ -47,7 +47,7 @@ function DeleteTour(id) {
     location.href("/Home/Index");
 }
 
-let addTour = document.getElementById('addTour');
+/*let addTour = document.getElementById('addTour');
 
 addTour.addEventListener('click', () => {
 
@@ -79,7 +79,7 @@ addTour.addEventListener('click', () => {
         alert("Form`s fields are not filled!")
     }
  
-});
+});*/
 
 
 
